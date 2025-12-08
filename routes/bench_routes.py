@@ -4,13 +4,13 @@ from sqlalchemy.future import select
 from typing import List
 
 from database import get_db
-from models.bench_model import Bench, BenchDB
+from models.bench_model import Bench, BenchDB, BenchWithDetail
 from models.user_model import UserDB
 
 router = APIRouter(prefix="/lab-benches", tags=["Benchs"])
 
 
-@router.post("/create", response_model=Bench)
+@router.post("/create", response_model=BenchWithDetail)
 async def create_type(bench: Bench, db: AsyncSession = Depends(get_db)):
     # check user exists
     result = await db.execute(select(UserDB).where(UserDB.id == bench.user_id))
@@ -40,7 +40,7 @@ async def create_type(bench: Bench, db: AsyncSession = Depends(get_db)):
         )
     return db_user
 
-@router.get("/id/{bench_id}", response_model=Bench)
+@router.get("/id/{bench_id}", response_model=BenchWithDetail)
 async def get_knowledgebase_category(bench_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(
         select(BenchDB)
@@ -52,7 +52,7 @@ async def get_knowledgebase_category(bench_id: int, db: AsyncSession = Depends(g
     return category
 
 
-@router.put("/update/{bench_id}", response_model=Bench)
+@router.put("/update/{bench_id}", response_model=BenchWithDetail)
 async def update_category(bench_id: int, bench_update: Bench, db: AsyncSession = Depends(get_db)):
     result = await db.execute(
         select(BenchDB)
@@ -75,7 +75,7 @@ async def update_category(bench_id: int, bench_update: Bench, db: AsyncSession =
         raise HTTPException(status_code=400, detail=f"Unable to update bench {e}")
     return config
 
-@router.get("/list", response_model=List[Bench])
+@router.get("/list", response_model=List[BenchWithDetail])
 async def list_benchs(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(BenchDB))
     return result.scalars().all()

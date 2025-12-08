@@ -5,6 +5,8 @@ from typing import Optional
 from database import Base
 from datetime import datetime
 
+from models.user_model import User
+
 
 # ---------- SQLAlchemy Models ----------
 class BenchDB(Base):
@@ -50,3 +52,6 @@ class Bench(BaseModel):
 
     class Config:
         orm_mode = True
+
+class BenchWithDetail(Bench):
+    user: User

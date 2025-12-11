@@ -1,4 +1,4 @@
-# FastAPI Project
+# CCL Test Costing Backend - FastAPI Project
 
 A lightweight and high-performance API built with FastAPI. This project
 includes a simple structure for rapid development, local testing, and
@@ -7,10 +7,11 @@ production-readiness.
 ## Project Structure (Example)
 
     project/
-        app/
-            main.py
-            routers/
-            ...
+        models/
+        routes/
+        .gitignore
+        database.py
+        main.py
         requirements.txt
         README.md
 
@@ -31,7 +32,7 @@ production-readiness.
 ### Windows (PowerShell)
 
     python -m venv venv
-    .env\Scripts\Activate
+    .env\Scripts\Activate
 
 ## 2. Install Dependencies
 
@@ -70,6 +71,6 @@ http://127.0.0.1:8000/redoc
 ## Notes
 
 -   Activate your virtual environment before running commands.
--   Use uvicorn for development; consider gunicorn + uvicorn workers or
-    Docker for production.
+-   Ensure the database settings are specified correctly in database.py and that databse is accessible before running project
+-   Use uvicorn for development; consider gunicorn + uvicorn workers or Docker for production.
 -   Keep requirements.txt updated for consistent deployments.

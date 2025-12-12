@@ -5,60 +5,49 @@ from typing import Optional
 from database import Base
 from datetime import datetime
 
-from models.user_model import User
-from models.tests_model import Tests
-from models.instruments_model import Instruments
-
 
 # ---------- SQLAlchemy Models ----------
-class BenchDB(Base):
-    __tablename__ = "benches"
-
-    # id
+class TestsDB(Base):
+    __tablename__ = "tests"
+    #id
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-
-    # user
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-
+    
     name = Column(String, nullable=False)
-    description = Column(String, nullable=True)
-
-    # service columns
+    
+    #bench
+    bench_id = Column(Integer, ForeignKey("benches.id"), nullable=False)
+    
+    #service columns
     created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=True)
-    created_by = Column(String, nullable=True, default="System")
+    created_by = Column(String, nullable=True, default="system")
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
     updated_by = Column(String, nullable=True)
-
-    # relationships
-    user = relationship("UserDB", back_populates="benches", lazy="selectin")
-    tests = relationship("TestsDB", back_populates="benches", lazy="selectin")
-    instruments = relationship("InstrumentsDB", back_populates="benches", lazy="selectin")
-
     
-# ---------- Pydantic Schemas ----------
-class Bench(BaseModel):
-    # id
-    id: Optional[int] = None
-    # user
-    user_id: int
+    # relatinonships
+    benches = relationship("BenchDB", back_populates="tests")
 
+# ---------- Pydantic Schemas ----------
+class Tests(BaseModel):
+    #id
+    id: Optional[int] = None 
+    
     name: str = Field(
         ...,
         min_length=2,
         max_length=50,
         description="Name must be between 2 and 50 characters",
     )
-    description: Optional[str] = None
-    # service columns
+    #bench
+    bench_id: int
+    
+    #service columns
     created_at: Optional[datetime] = None
     created_by: Optional[str]
     updated_at: Optional[datetime] = None
     updated_by: Optional[str]
-
+    
     class Config:
         orm_mode = True
-
-class BenchWithDetail(Bench):
-    user: User
-    tests: Tests
-    instruments: Instruments
+        
+class TestsWithDetail(Tests):
+    pass

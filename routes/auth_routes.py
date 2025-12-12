@@ -36,7 +36,7 @@ async def login(
         "name": f"{user.fname} {user.lname}",
         "role": user.role,
         "mobile": user.mobile,
-        "exp":  datetime.now(timezone.utc) + timedelta( minutes=30),
+        "exp":  datetime.now(timezone.utc) + timedelta( minutes=10),
     }
     token = jwt.encode(to_encode, assist.SECRET_KEY, algorithm=assist.ALGORITHM)
 

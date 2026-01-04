@@ -42,9 +42,7 @@ async def create_type(tests: Tests, db: AsyncSession = Depends(get_db)):
         
         db_notification = NotificationDB(
             title=notification_title,
-            date=datetime.now(),
-            created_by=user.email
-        )
+            date=datetime.now()        )
         
         db.add(db_notification)
         await db.commit()

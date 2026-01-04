@@ -4,7 +4,7 @@ from sqlalchemy.future import select
 from typing import List
 
 from database import get_db
-from models.notification_model import Notification, NotificationDB, NotificationCreate
+from models.notification_model import Notification, NotificationDB, NotificationWithDetail
 
 router = APIRouter(prefix="/notification", tags=["Notification"])
 

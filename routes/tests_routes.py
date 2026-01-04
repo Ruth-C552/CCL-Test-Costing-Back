@@ -7,6 +7,8 @@ from database import get_db
 from helpers import assist
 from models.tests_model import Tests, TestsDB,  TestsWithDetail
 from models.user_model import UserDB 
+from models.notification_model import NotificationDB
+from datetime import datetime
  
 router = APIRouter(prefix="/lab-tests", tags=["Tests"])
 
@@ -28,9 +30,26 @@ async def create_type(tests: Tests, db: AsyncSession = Depends(get_db)):
     )
     
     db.add(db_tests)
+    
     try:
+        #commit ttest first to get ID
         await db.commit()
         await db.refresh(db_tests)
+        
+        #create notification
+        today = datetime.now().strftime("%Y-%m-%d")
+        notification_title = f"{db_tests.name} has been created on {today}"
+        
+        db_notification = NotificationDB(
+            title=notification_title,
+            date=datetime.now(),
+            created_by=user.email
+        )
+        
+        db.add(db_notification)
+        await db.commit()
+        await db.refresh(db_notification)
+        
     except Exception as e:
         await db.rollback()
         raise HTTPException(

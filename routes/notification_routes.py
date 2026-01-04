@@ -70,3 +70,10 @@ async def list_notifications(db: AsyncSession = Depends(get_db)):
         select(NotificationDB).order_by(NotificationDB.date.desc())
     )
     return result.scalars().all()
+
+@router.get("/count")
+async def notification_count(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(func.count(NotificationDB.id)))
+    count = result.scalar()
+    return {"count": count}
+

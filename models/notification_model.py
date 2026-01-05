@@ -16,6 +16,14 @@ class NotificationDB(Base):
 
 
 # ---------- Pydantic Schemas ----------
+class NotificationCreate(BaseModel):
+    title: str = Field(
+        ...,
+        min_length=2,
+        max_length=100,
+        description="Notification title",
+    )
+
 class Notification(BaseModel):
     id: Optional[int] = None
 
@@ -31,11 +39,5 @@ class Notification(BaseModel):
     class Config:
         orm_mode = True
 
-
-class NotificationWithDetail(BaseModel):
-    title: str = Field(
-        ...,
-        min_length=2,
-        max_length=100,
-        description="Notification title",
-    )
+class NotificationWithDetail(Notification):
+    pass

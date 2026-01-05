@@ -36,6 +36,18 @@ class BenchDB(Base):
 
     
 # ---------- Pydantic Schemas ----------
+class BenchCreate(BaseModel):
+    # user
+    user_id: int
+
+    name: str = Field(
+        ...,
+        min_length=2,
+        max_length=50,
+        description="Name must be between 2 and 50 characters",
+    )
+    description: Optional[str] = None
+
 class Bench(BaseModel):
     # id
     id: Optional[int] = None

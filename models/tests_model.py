@@ -27,6 +27,18 @@ class TestsDB(Base):
     benches = relationship("BenchDB", back_populates="tests")
 
 # ---------- Pydantic Schemas ----------
+class TestsCreate(BaseModel):
+    name: str = Field(
+        ...,
+        min_length=2,
+        max_length=50,
+        description="Name must be between 2 and 50 characters",
+    )
+    #bench
+    bench_id: int
+    
+    created_by: Optional[str] 
+    
 class Tests(BaseModel):
     #id
     id: Optional[int] = None 

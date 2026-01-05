@@ -29,6 +29,20 @@ class InstrumentsDB(Base):
 
 
 #------------Pydantic Schemas--------------
+class InstrumentsCreate(BaseModel):
+    name: str = Field(
+        ...,
+        min_lenth=2,
+        max_length=50,
+        description="Name must be between 2 and 50 characters",
+    )
+    cost: float 
+    
+    #bench
+    bench_id: int
+    
+    created_by: Optional[str] = None
+    
 class Instruments(BaseModel):
     #id
     id: Optional[int] = None

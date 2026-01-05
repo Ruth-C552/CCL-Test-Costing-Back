@@ -4,14 +4,14 @@ from sqlalchemy.future import select
 from typing import List
 
 from database import get_db
-from models.bench_model import Bench, BenchDB, BenchWithDetail
+from models.bench_model import Bench, BenchCreate, BenchDB, BenchWithDetail
 from models.user_model import UserDB
 
 router = APIRouter(prefix="/lab-benches", tags=["Benchs"])
 
 
 @router.post("/create", response_model=Bench)
-async def create_type(bench: Bench, db: AsyncSession = Depends(get_db)):
+async def create_type(bench: BenchCreate, db: AsyncSession = Depends(get_db)):
     # check user exists
     result = await db.execute(select(UserDB).where(UserDB.id == bench.user_id))
     user = result.scalars().first()

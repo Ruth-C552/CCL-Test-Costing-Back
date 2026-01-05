@@ -4,14 +4,14 @@ from sqlalchemy.future import select
 from typing import List
 
 from database import get_db
-from models.notification_model import Notification, NotificationDB, NotificationWithDetail
+from models.notification_model import Notification, NotificationDB, NotificationCreate, NotificationWithDetail
 
 router = APIRouter(prefix="/notification", tags=["Notification"])
 
 
 @router.post("/create", response_model=Notification)
 async def create_notification(
-    notification: Notification,
+    notification: NotificationCreate,
     db: AsyncSession = Depends(get_db)
 ):
     db_notification = NotificationDB(

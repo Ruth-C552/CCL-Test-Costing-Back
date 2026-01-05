@@ -5,14 +5,14 @@ from typing import List
 
 from database import get_db
 #from helpers import assist
-from models.instruments_model import Instruments, InstrumentsDB, InstrumentsWithDetail 
+from models.instruments_model import Instruments, InstrumentsCreate, InstrumentsDB, InstrumentsWithDetail 
 from models.user_model import UserDB 
 
 
 router = APIRouter(prefix="/lab-instruments", tags=["Instruments"])
 
 @router.post("/create", response_model=Instruments)
-async def create_instruments(instruments: Instruments, db: AsyncSession = Depends(get_db)):
+async def create_instruments(instruments: InstrumentsCreate, db: AsyncSession = Depends(get_db)):
     #check instrument exists
     result = await db.execute(select(UserDB).where(UserDB.email == instruments.created_by))
     user = result.scalars().first()

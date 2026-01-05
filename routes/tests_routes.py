@@ -5,7 +5,7 @@ from typing import List
 
 from database import get_db
 from helpers import assist
-from models.tests_model import Tests, TestsDB,  TestsWithDetail
+from models.tests_model import Tests, TestsCreate, TestsDB,  TestsWithDetail
 from models.user_model import UserDB 
 from models.notification_model import NotificationDB
 from datetime import datetime
@@ -14,7 +14,9 @@ router = APIRouter(prefix="/lab-tests", tags=["Tests"])
 
 
 @router.post("/create", response_model=Tests)
-async def create_type(tests: Tests, db: AsyncSession = Depends(get_db)):
+async def create_type(tests: TestsCreate, db: AsyncSession = Depends(get_db)):
+    
+    created_by_email = tests.created_by if tests.created_by else "system"
     #check user exists
     result = await db.execute(select(UserDB).where(UserDB.email == tests.created_by))
     user = result.scalars().first()
@@ -26,33 +28,23 @@ async def create_type(tests: Tests, db: AsyncSession = Depends(get_db)):
     db_tests = TestsDB(
         name=tests.name,
         bench_id=tests.bench_id,
-        created_by=user.email,        
+        created_by=created_by_email,        
     )
     
     db.add(db_tests)
     
     try:
-        #commit ttest first to get ID
+        #commit test first to get ID
         await db.commit()
-        await db.refresh(db_tests)
-        
-        #create notification
-        today = datetime.now().strftime("%Y-%m-%d")
-        notification_title = f"{db_tests.name} has been created on {today}"
-        
-        db_notification = NotificationDB(
-            title=notification_title,
-            date=datetime.now()        )
-        
-        db.add(db_notification)
-        await db.commit()
-        await db.refresh(db_notification)
-        
+        await db.refresh(db_tests)        
     except Exception as e:
         await db.rollback()
         raise HTTPException(
             status_code=400, detail=f"Unable to create test: f{e}"
         )
+        
+
+        
     return db_tests
 
 

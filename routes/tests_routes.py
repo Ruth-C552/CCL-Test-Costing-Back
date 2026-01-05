@@ -42,8 +42,22 @@ async def create_type(tests: TestsCreate, db: AsyncSession = Depends(get_db)):
         raise HTTPException(
             status_code=400, detail=f"Unable to create test: f{e}"
         )
-        
 
+    #create notification
+    try:
+        today = datetime.now().strftime("%Y-%m-%D")
+        notification_title = f"{db_tests.name} test created on {today} by {created_by_email}"
+        notification = NotificationDB(
+            title=notification_title,
+            date=datetime.now()
+        )                   
+        db.add(notification)
+        await db.commit()
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=400, detail=f"Unable to create notification: f{e}"
+        )
         
     return db_tests
 

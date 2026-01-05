@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import func
 from typing import List
 
 from database import get_db
@@ -73,7 +74,8 @@ async def list_notifications(db: AsyncSession = Depends(get_db)):
 
 @router.get("/count")
 async def notification_count(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(func.count(NotificationDB.id)))
+    result = await db.execute(
+        select(func.count(NotificationDB.id))
+    )
     count = result.scalar()
     return {"count": count}
-

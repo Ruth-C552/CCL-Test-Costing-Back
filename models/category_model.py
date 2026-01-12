@@ -15,14 +15,14 @@ class CategoryDB(Base):
     name = Column(String, nullable=False)
     """    #bench
     bench_id = Column(Integer, ForeignKey("benches.id"), nullable=False)
-    
+   """    
     #service columns
     created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=True)
     created_by = Column(String, nullable=True, default="system")
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
     updated_by = Column(String, nullable=True)
     
-    """
+ 
 
     # relatinonships
     tests = relationship("TestsDB", back_populates="category", lazy="selectin")
@@ -36,11 +36,11 @@ class CategoryCreate(BaseModel):
         description="Name must be between 2 and 50 characters",
     )
     
-"""
+    """
 
-    bench_id: int
+    bench_id:  """
     
-    created_by: Optional[str] """
+    created_by: Optional[str] 
 
     
 class Category(BaseModel):
@@ -56,14 +56,14 @@ class Category(BaseModel):
 
     """
   bench_id: int
-    
+        """
+
     #service columns
     created_at: Optional[datetime] = None
     created_by: Optional[str]
     updated_at: Optional[datetime] = None
     updated_by: Optional[str]
     
-    """
 
     class Config:
         orm_mode = True

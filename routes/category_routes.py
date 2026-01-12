@@ -15,14 +15,14 @@ router = APIRouter(prefix="/transaction-categories", tags=["Category"])
 @router.post("/create", response_model=Category)
 async def create_type(category: CategoryCreate, db: AsyncSession = Depends(get_db)):
     
-    '''  created_by_email = category.created_by if category.created_by else "system"
+    created_by_email = category.created_by if category.created_by else "system"
     #check user exists
     result = await db.execute(select(UserDB).where(UserDB.email == category.created_by))
     user = result.scalars().first()
     if not user:
         raise HTTPException(
             status_code=400, detail=f"The user with email '{category.created_by}' does not exist"
-        )'''
+        )
     
     db_category = CategoryDB(
         name=category.name,

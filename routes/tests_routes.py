@@ -28,6 +28,7 @@ async def create_type(tests: TestsCreate, db: AsyncSession = Depends(get_db)):
     db_tests = TestsDB(
         name=tests.name,
         bench_id=tests.bench_id,
+        category_id=tests.category_id,
         created_by=created_by_email,        
     )
     

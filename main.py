@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from database import engine, Base
 from routes import auth_routes
 from routes import user_routes
+from routes import category_routes
 from routes import bench_routes
 from routes import tests_routes
 from routes import instruments_routes
@@ -45,11 +46,11 @@ app.add_middleware(
 # include routers
 app.include_router(user_routes.router)
 app.include_router(auth_routes.router)
+app.include_router(category_routes.router)
 app.include_router(bench_routes.router)
 app.include_router(tests_routes.router)
 app.include_router(instruments_routes.router)
 app.include_router(notification_routes.router)
-
 
 
 # create tables at startup

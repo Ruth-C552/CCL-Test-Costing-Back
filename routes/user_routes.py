@@ -9,7 +9,6 @@ from models.user_model import User, UserDB, UserSimple, UserWithDetail
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-
 @router.post("/create", response_model=User)
 async def create_user(user: User, db: AsyncSession = Depends(get_db)):
     # Check duplicate email

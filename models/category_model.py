@@ -7,16 +7,14 @@ from datetime import datetime
 
 
 # ---------- SQLAlchemy Models ----------
-class TestsDB(Base):
-    __tablename__ = "tests"
+class CategoryDB(Base):
+    __tablename__ = "categories"
     #id
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
     name = Column(String, nullable=False)
-    
-    #bench
+    """    #bench
     bench_id = Column(Integer, ForeignKey("benches.id"), nullable=False)
-    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
     
     #service columns
     created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=True)
@@ -24,26 +22,28 @@ class TestsDB(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
     updated_by = Column(String, nullable=True)
     
+    """
+
     # relatinonships
-    benches = relationship("BenchDB", back_populates="tests")
-    #instruments = relationship("InstrumentsDB", back_populates="tests")
-    category = relationship("CategoryDB", back_populates="tests", lazy="selectin")
+    tests = relationship("TestsDB", back_populates="category", lazy="selectin")
 
 # ---------- Pydantic Schemas ----------
-class TestsCreate(BaseModel):
+class CategoryCreate(BaseModel):
     name: str = Field(
         ...,
         min_length=2,
         max_length=50,
         description="Name must be between 2 and 50 characters",
     )
-    #bench
-    bench_id: int
-    category_id: int
-        
-    created_by: Optional[str] 
     
-class Tests(BaseModel):
+"""
+
+    bench_id: int
+    
+    created_by: Optional[str] """
+
+    
+class Category(BaseModel):
     #id
     id: Optional[int] = None 
     
@@ -53,9 +53,9 @@ class Tests(BaseModel):
         max_length=50,
         description="Name must be between 2 and 50 characters",
     )
-    #bench
-    bench_id: int
-    category_id: int
+
+    """
+  bench_id: int
     
     #service columns
     created_at: Optional[datetime] = None
@@ -63,8 +63,10 @@ class Tests(BaseModel):
     updated_at: Optional[datetime] = None
     updated_by: Optional[str]
     
+    """
+
     class Config:
         orm_mode = True
         
-class TestsWithDetail(Tests):
+class CategoryWithDetail(Category):
     pass

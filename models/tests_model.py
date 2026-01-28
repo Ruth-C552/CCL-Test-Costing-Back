@@ -5,6 +5,7 @@ from typing import Optional
 from database import Base
 from datetime import datetime
 
+from models.category_model import Category
 
 # ---------- SQLAlchemy Models ----------
 class TestsDB(Base):
@@ -67,4 +68,4 @@ class Tests(BaseModel):
         orm_mode = True
         
 class TestsWithDetail(Tests):
-    pass
+    category: Category

@@ -22,7 +22,6 @@ class CategoryDB(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
     updated_by = Column(String, nullable=True)
     
- 
 
     # relatinonships
     tests = relationship("TestsDB", back_populates="category", lazy="selectin")
